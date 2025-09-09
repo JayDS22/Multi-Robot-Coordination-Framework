@@ -1,0 +1,250 @@
+# Robot-specific configuration for Multi-Robot Coordination Framework
+
+# Robot hardware specifications
+robot_settings:
+  max_velocity: 2.0  # m/s
+  max_acceleration: 1.0  # m/s²
+  max_angular_velocity: 1.5  # rad/s
+  sensor_range: 10.0  # meters
+  communication_range: 50.0  # meters
+  battery_capacity: 100.0  # percentage
+  payload_capacity: 10.0  # kg
+  
+  # Robot capabilities (can be customized per robot)
+  capabilities:
+    - "navigation"
+    - "manipulation" 
+    - "sensing"
+    # - "cleaning"
+    # - "transport"
+    # - "security"
+    # - "tools"
+    # - "emergency"
+  
+  # Physical dimensions
+  dimensions:
+    length: 0.8  # meters
+    width: 0.6   # meters
+    height: 1.2  # meters
+    wheel_base: 0.5  # meters
+
+# Learning algorithm parameters (robot-specific)
+learning:
+  algorithm: "q_learning"  # q_learning, actor_critic, reinforce
+  learning_rate: 0.01
+  discount_factor: 0.95
+  exploration_rate: 0.15
+  exploration_decay: 0.995
+  min_exploration_rate: 0.01
+  
+  # Experience replay
+  enable_experience_replay: true
+  replay_buffer_size: 1000
+  batch_size: 32
+  update_frequency: 10
+  
+  # Network architecture (for neural approaches)
+  network:
+    hidden_layers: [128, 64]
+    activation: "relu"
+    dropout_rate: 0.1
+
+# Navigation settings
+navigation:
+  path_planning_algorithm: "a_star"  # a_star, rrt, dwa
+  obstacle_avoidance: true
+  safety_margin: 0.3  # meters
+  goal_tolerance: 0.1  # meters
+  
+  # Dynamic window approach parameters
+  dwa:
+    velocity_resolution: 0.1
+    angular_resolution: 0.1
+    prediction_time: 2.0
+    
+  # Localization
+  localization:
+    method: "amcl"  # amcl, ekf, particle_filter
+    initial_pose_uncertainty: 0.5
+    enable_imu: true
+    enable_odometry: true
+
+# Task execution parameters
+task_execution:
+  timeout_factor: 1.2  # multiply estimated duration
+  retry_attempts: 3
+  failure_threshold: 0.3
+  
+  # Task-specific settings
+  pickup_approach_distance: 0.5  # meters
+  delivery_confirmation_required: true
+  inspection_dwell_time: 3.0  # seconds
+  cleaning_overlap_ratio: 0.1
+
+# Communication settings
+communication:
+  heartbeat_interval: 1.0  # seconds
+  message_timeout: 5.0  # seconds
+  max_retries: 3
+  enable_compression: true
+  
+  # Quality of service
+  qos:
+    heartbeat: "best_effort"
+    task_assignment: "reliable"
+    emergency: "reliable"
+    
+  # Network settings
+  network:
+    interface: "wlan0"
+    auto_reconnect: true
+    connection_timeout: 10.0
+
+# Sensor configuration
+sensors:
+  lidar:
+    enable: true
+    range: 10.0  # meters
+    resolution: 0.5  # degrees
+    update_rate: 10  # Hz
+    
+  camera:
+    enable: true
+    resolution: [640, 480]
+    fps: 30
+    field_of_view: 60  # degrees
+    
+  imu:
+    enable: true
+    update_rate: 100  # Hz
+    calibration_required: true
+    
+  ultrasonic:
+    enable: true
+    range: 2.0  # meters
+    num_sensors: 8
+    
+  force_torque:
+    enable: false  # only for manipulation robots
+    sensitivity: 0.1  # N
+
+# Safety and fault tolerance
+safety:
+  emergency_stop_enabled: true
+  collision_avoidance: true
+  battery_safety_threshold: 15.0  # percentage
+  
+  # Fault detection
+  fault_detection:
+    enable_self_diagnostics: true
+    diagnostic_interval: 10.0  # seconds
+    health_check_timeout: 5.0  # seconds
+    
+  # Recovery behaviors
+  recovery:
+    stuck_detection_time: 30.0  # seconds
+    recovery_attempts: 3
+    safe_mode_velocity: 0.5  # m/s
+
+# Power management
+power:
+  low_battery_threshold: 20.0  # percentage
+  critical_battery_threshold: 10.0  # percentage
+  charging_station_approach_threshold: 25.0  # percentage
+  
+  # Power consumption estimates (percentage per hour)
+  consumption_rates:
+    idle: 5.0
+    moving: 15.0
+    working: 25.0
+    sensing: 10.0
+    
+  # Charging
+  charging:
+    auto_dock: true
+    charging_rate: 20.0  # percentage per hour
+    full_charge_time: 3.0  # hours
+
+# Logging and monitoring
+logging:
+  log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  enable_performance_logging: true
+  log_file_max_size: "10MB"
+  log_rotation_count: 3
+  
+  # Metrics collection
+  metrics:
+    enable_task_metrics: true
+    enable_performance_metrics: true
+    enable_energy_metrics: true
+    collection_interval: 30.0  # seconds
+
+# Robot-specific overrides (can be set per robot instance)
+robot_overrides:
+  # Example overrides for specific robot types
+  
+  # Cleaning robot configuration
+  cleaning_robot:
+    capabilities: ["navigation", "cleaning"]
+    max_velocity: 1.0
+    task_execution:
+      cleaning_overlap_ratio: 0.2
+    power:
+      consumption_rates:
+        working: 35.0  # Higher consumption for cleaning
+  
+  # Security robot configuration  
+  security_robot:
+    capabilities: ["navigation", "sensing", "security", "communication"]
+    sensor_range: 15.0
+    sensors:
+      camera:
+        resolution: [1920, 1080]
+        enable_night_vision: true
+    task_execution:
+      patrol_speed_factor: 0.8
+  
+  # Manipulation robot configuration
+  manipulation_robot:
+    capabilities: ["navigation", "manipulation", "sensing"]
+    payload_capacity: 20.0
+    sensors:
+      force_torque:
+        enable: true
+        sensitivity: 0.05
+    task_execution:
+      pickup_approach_distance: 0.3
+      manipulation_precision: "high"
+
+# Simulation settings (for testing)
+simulation:
+  enable_noise: true
+  noise_parameters:
+    position_noise_std: 0.01  # meters
+    velocity_noise_std: 0.05  # m/s
+    sensor_noise_std: 0.02
+    battery_drain_variance: 0.1
+  
+  # Virtual environment
+  virtual_environment:
+    enable_obstacles: true
+    obstacle_density: 0.1
+    dynamic_obstacles: false
+    
+  # Performance simulation
+  performance:
+    task_success_rate: 0.9
+    communication_reliability: 0.95
+    hardware_failure_rate: 0.001  # per hour
+
+# Development and debugging
+development:
+  enable_debug_mode: false
+  enable_visualization: false
+  publish_debug_topics: false
+  
+  # Testing
+  testing:
+    enable_unit_tests: true
+    enable_mock_hardware: false
+    test_data_recording: false
