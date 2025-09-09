@@ -1,0 +1,480 @@
+# Environment-specific configurations for Multi-Robot Coordination Framework
+
+# Warehouse Environment Configuration
+warehouse:
+  name: "Automated Warehouse"
+  description: "Indoor warehouse environment with structured layout"
+  
+  # Physical boundaries
+  boundaries:
+    x_min: -50.0
+    x_max: 50.0
+    y_min: -50.0
+    y_max: 50.0
+    z_min: 0.0
+    z_max: 4.0
+  
+  # Environment features
+  features:
+    structured_layout: true
+    indoor: true
+    controlled_lighting: true
+    temperature_controlled: true
+    dust_level: "low"
+    noise_level: "moderate"
+  
+  # Static obstacles and structures
+  obstacles:
+    - type: "shelf_unit"
+      position: [10, 10]
+      dimensions: [2, 8, 3]
+      id: "shelf_A1"
+    - type: "shelf_unit"
+      position: [10, -10]
+      dimensions: [2, 8, 3]
+      id: "shelf_A2"
+    - type: "pillar"
+      position: [0, 0]
+      dimensions: [1, 1, 4]
+      id: "support_pillar_1"
+    - type: "loading_dock"
+      position: [-40, 0]
+      dimensions: [5, 10, 1]
+      id: "dock_1"
+  
+  # Charging stations
+  charging_stations:
+    - id: "charge_station_1"
+      position: [30, 30]
+      capacity: 4
+      power_rating: 5000  # watts
+      connector_type: "universal"
+    - id: "charge_station_2"
+      position: [-30, -30]
+      capacity: 3
+      power_rating: 5000
+      connector_type: "universal"
+  
+  # Task-specific areas
+  zones:
+    pickup_zones:
+      - id: "pickup_A"
+        position: [20, 25]
+        radius: 5.0
+        capacity: 10
+      - id: "pickup_B"
+        position: [-20, 25]
+        radius: 5.0
+        capacity: 8
+    
+    delivery_zones:
+      - id: "delivery_dock"
+        position: [-40, 0]
+        radius: 8.0
+        capacity: 15
+    
+    sorting_areas:
+      - id: "sort_area_1"
+        position: [0, 20]
+        dimensions: [10, 10]
+        capacity: 20
+  
+  # Common task types for this environment
+  task_types:
+    - "pickup"
+    - "delivery"
+    - "transport"
+    - "sorting"
+    - "inventory"
+    - "cleaning"
+    - "inspection"
+  
+  # Robot capabilities typically needed
+  required_capabilities:
+    - "navigation"
+    - "manipulation"
+    - "sensing"
+    - "transport"
+
+# Factory Environment Configuration
+factory:
+  name: "Manufacturing Factory"
+  description: "Industrial factory environment with production lines"
+  
+  boundaries:
+    x_min: -100.0
+    x_max: 100.0
+    y_min: -100.0
+    y_max: 100.0
+    z_min: 0.0
+    z_max: 5.0
+  
+  features:
+    structured_layout: true
+    indoor: true
+    controlled_lighting: true
+    temperature_controlled: false
+    dust_level: "moderate"
+    noise_level: "high"
+    vibration_level: "moderate"
+  
+  obstacles:
+    - type: "production_line"
+      position: [0, 0]
+      dimensions: [80, 5, 2]
+      id: "line_1"
+      status: "active"
+    - type: "production_line"
+      position: [0, 20]
+      dimensions: [80, 5, 2]
+      id: "line_2"
+      status: "active"
+    - type: "machine_tool"
+      position: [30, 50]
+      dimensions: [3, 3, 3]
+      id: "cnc_1"
+    - type: "storage_rack"
+      position: [60, 60]
+      dimensions: [5, 10, 4]
+      id: "parts_storage"
+  
+  charging_stations:
+    - id: "factory_charge_1"
+      position: [80, 80]
+      capacity: 6
+      power_rating: 7500
+      connector_type: "industrial"
+    - id: "factory_charge_2"
+      position: [-80, -80]
+      capacity: 4
+      power_rating: 7500
+      connector_type: "industrial"
+  
+  zones:
+    maintenance_areas:
+      - id: "maint_area_1"
+        position: [70, 70]
+        radius: 10.0
+        tools_available: ["wrench", "screwdriver", "diagnostic"]
+    
+    quality_control:
+      - id: "qc_station_1"
+        position: [40, 40]
+        dimensions: [5, 5]
+        equipment: ["vision_system", "measurement_tools"]
+    
+    raw_materials:
+      - id: "raw_input"
+        position: [-70, 0]
+        radius: 15.0
+        capacity: 100
+  
+  task_types:
+    - "maintenance"
+    - "inspection"
+    - "quality_control"
+    - "material_handling"
+    - "machine_operation"
+    - "safety_patrol"
+  
+  required_capabilities:
+    - "navigation"
+    - "manipulation"
+    - "tools"
+    - "sensing"
+    - "analysis"
+
+# Hospital Environment Configuration
+hospital:
+  name: "Healthcare Facility"
+  description: "Hospital environment with patient care areas"
+  
+  boundaries:
+    x_min: -80.0
+    x_max: 80.0
+    y_min: -60.0
+    y_max: 60.0
+    z_min: 0.0
+    z_max: 3.5
+  
+  features:
+    structured_layout: true
+    indoor: true
+    controlled_lighting: true
+    temperature_controlled: true
+    dust_level: "very_low"
+    noise_level: "low"
+    sterile_environment: true
+    human_presence: "high"
+  
+  obstacles:
+    - type: "patient_bed"
+      position: [20, 20]
+      dimensions: [2, 1, 1]
+      id: "bed_101"
+      mobile: false
+    - type: "medical_equipment"
+      position: [25, 20]
+      dimensions: [1, 1, 1.5]
+      id: "ventilator_1"
+    - type: "reception_desk"
+      position: [0, -50]
+      dimensions: [4, 2, 1]
+      id: "main_reception"
+  
+  charging_stations:
+    - id: "hospital_charge_1"
+      position: [60, 50]
+      capacity: 3
+      power_rating: 3000
+      connector_type: "medical_grade"
+      sterilization: true
+  
+  zones:
+    patient_rooms:
+      - id: "room_101"
+        position: [20, 20]
+        dimensions: [4, 4]
+        privacy_level: "high"
+      - id: "room_102"
+        position: [20, 10]
+        dimensions: [4, 4]
+        privacy_level: "high"
+    
+    operating_theaters:
+      - id: "or_1"
+        position: [-20, 20]
+        dimensions: [6, 6]
+        sterile_level: "surgical"
+        access_restricted: true
+    
+    pharmacies:
+      - id: "central_pharmacy"
+        position: [0, 30]
+        dimensions: [8, 6]
+        security_level: "high"
+    
+    nursing_stations:
+      - id: "nurse_station_1"
+        position: [30, 15]
+        dimensions: [3, 3]
+        staffed: true
+  
+  task_types:
+    - "medication_delivery"
+    - "supply_transport"
+    - "cleaning"
+    - "patient_monitoring"
+    - "emergency_response"
+    - "specimen_transport"
+  
+  required_capabilities:
+    - "navigation"
+    - "transport"
+    - "sensing"
+    - "communication"
+    - "emergency"
+    - "sterilization"
+  
+  # Special hospital considerations
+  safety_requirements:
+    - "human_collision_avoidance"
+    - "noise_reduction"
+    - "infection_control"
+    - "emergency_protocols"
+
+# Outdoor Environment Configuration
+outdoor:
+  name: "Outdoor Campus"
+  description: "Open outdoor environment with natural obstacles"
+  
+  boundaries:
+    x_min: -200.0
+    x_max: 200.0
+    y_min: -200.0
+    y_max: 200.0
+    z_min: 0.0
+    z_max: 50.0  # Account for trees, buildings
+  
+  features:
+    structured_layout: false
+    indoor: false
+    controlled_lighting: false
+    temperature_controlled: false
+    weather_dependent: true
+    dust_level: "variable"
+    noise_level: "variable"
+    terrain_variation: true
+  
+  obstacles:
+    - type: "building"
+      position: [0, 0]
+      dimensions: [30, 20, 15]
+      id: "main_building"
+    - type: "tree"
+      position: [50, 50]
+      dimensions: [2, 2, 8]
+      id: "oak_tree_1"
+    - type: "parking_area"
+      position: [-50, -50]
+      dimensions: [40, 30, 0.1]
+      id: "parking_lot_a"
+    - type: "pond"
+      position: [100, -100]
+      dimensions: [20, 15, 2]
+      id: "campus_pond"
+      traversable: false
+  
+  charging_stations:
+    - id: "solar_charge_1"
+      position: [150, 150]
+      capacity: 8
+      power_rating: 10000
+      power_source: "solar"
+      weather_protected: true
+    - id: "building_charge_1"
+      position: [0, 25]
+      capacity: 4
+      power_rating: 5000
+      power_source: "grid"
+      indoor: true
+  
+  zones:
+    patrol_routes:
+      - id: "perimeter_route"
+        waypoints:
+          - [-180, -180]
+          - [180, -180]
+          - [180, 180]
+          - [-180, 180]
+        length: 1440.0  # meters
+      
+      - id: "building_circuit"
+        waypoints:
+          - [-30, -30]
+          - [30, -30]
+          - [30, 30]
+          - [-30, 30]
+        length: 240.0
+    
+    delivery_points:
+      - id: "building_entrance"
+        position: [0, -25]
+        access_level: "public"
+      - id: "service_entrance"
+        position: [-25, 0]
+        access_level: "restricted"
+  
+  task_types:
+    - "security_patrol"
+    - "delivery"
+    - "inspection"
+    - "environmental_monitoring"
+    - "emergency_response"
+    - "maintenance"
+  
+  required_capabilities:
+    - "navigation"
+    - "sensing"
+    - "weather_resistance"
+    - "communication"
+    - "security"
+  
+  # Weather considerations
+  weather_conditions:
+    temperature_range: [-20, 45]  # Celsius
+    precipitation_types: ["rain", "snow", "hail"]
+    wind_speed_max: 25  # m/s
+    visibility_min: 10  # meters in fog
+
+# Simulation Environment Configuration
+simulation:
+  name: "Virtual Test Environment"
+  description: "Configurable simulation environment for testing"
+  
+  boundaries:
+    x_min: -100.0
+    x_max: 100.0
+    y_min: -100.0
+    y_max: 100.0
+    z_min: 0.0
+    z_max: 10.0
+  
+  features:
+    structured_layout: true
+    configurable: true
+    physics_simulation: true
+    sensor_simulation: true
+    noise_simulation: true
+  
+  # Dynamically generated obstacles
+  obstacle_generation:
+    enable: true
+    density: 0.1  # obstacles per square meter
+    types: ["box", "cylinder", "sphere"]
+    size_range: [0.5, 3.0]  # meters
+    random_seed: 42
+  
+  charging_stations:
+    - id: "sim_charge_central"
+      position: [0, 0]
+      capacity: 10
+      power_rating: 5000
+      infinite_power: true
+  
+  # Configurable test scenarios
+  test_scenarios:
+    basic_navigation:
+      obstacles: 5
+      targets: 3
+      robots: 2
+    
+    multi_robot_coordination:
+      obstacles: 15
+      targets: 10
+      robots: 5
+    
+    fault_tolerance_test:
+      obstacles: 10
+      targets: 8
+      robots: 4
+      fault_injection: true
+    
+    scalability_test:
+      obstacles: 20
+      targets: 50
+      robots: 20
+  
+  task_types:
+    - "navigation"
+    - "pickup"
+    - "delivery"
+    - "inspection"
+    - "coordination_test"
+  
+  required_capabilities:
+    - "navigation"
+    - "sensing"
+    - "manipulation"
+
+# Global environment settings
+global_settings:
+  # Coordinate system
+  coordinate_system: "cartesian"
+  units: "metric"
+  
+  # Time settings
+  simulation_time_factor: 1.0  # Real-time multiplier
+  
+  # Physics parameters
+  gravity: 9.81  # m/s²
+  air_density: 1.225  # kg/m³
+  
+  # Communication parameters
+  rf_propagation_model: "free_space"
+  max_communication_range: 100.0  # meters
+  
+  # Safety parameters
+  collision_detection: true
+  emergency_stop_enabled: true
+  human_safety_zones: true
