@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+  coordination-master:
+    build: .
+    container_name: multi-robot-master
+    environment:
+      - ROS_DOMAIN_ID=42
+      - MASTER_IP=coordination-master
+    ports:
+      - "8080:8080"  # Web interface
+      - "8081:8081"  # API
+    volumes:
+      - ./logs:/opt/multi_robot_ws/logs
+      - ./config:/opt/multi_robot_ws/src/multi_robot_coordination/config
+    command: ["python3", "/opt/multi_robot_ws/src/multi_robot_coordination/coordination_master.py", "--robots", "5", "--environment", "warehouse"]
+    networks:
+      - multi-robot-net
+
+  robot-1:
+    build: .
+    container_name: multi-robot-agent-1
+    environment:
+      - ROS_DOMAIN_ID=42
+      - ROBOT_ID=robot_1
+      - MASTER_IP=coordination-master
+    depends_on:
+      - coordination-master
+    volumes:
+      - ./logs:/opt/multi_robot_ws/logs
+      - ./config:/opt/multi_robot_ws/src/multi_robot_coordination/config
+    command: ["python3", "/opt/multi_robot_ws/src/multi_robot_coordination/robot_agent.py", "--robot-id", "robot_1"]
+    networks:
+      - multi-robot-net
+
+  robot-2:
+    build: .
+    container_name: multi-robot-agent-2
+    environment:
+      - ROS_DOMAIN_ID=42
+      - ROBOT_ID=robot_2
+      - MASTER_IP=coordination-master
+    depends_on:
+      - coordination-master
+    volumes:
+      - ./logs:/opt/multi_robot_ws/logs
+      - ./config:/opt/multi_robot_ws/src/multi_robot_coordination/config
+    command: ["python3", "/opt/multi_robot_ws/src/multi_robot_coordination/robot_agent.py", "--robot-id", "robot_2"]
+    networks:
+      - multi-robot-net
+
+  robot-3:
+    build: .
+    container_name: multi-robot-agent-3
+    environment:
+      - ROS_DOMAIN_ID=42
+      - ROBOT_ID=robot_3
+      - MASTER_IP=coordination-master
+    depends_on:
+      - coordination-master
+    volumes:
+      - ./logs:/opt/multi_robot_ws/logs
+      - ./config:/opt/multi_robot_ws/src/multi_robot_coordination/config
+    command: ["python3", "/opt/multi_robot_ws/src/multi_robot_coordination/robot_agent.py", "--robot-id", "robot_3"]
+    networks:
+      - multi-robot-net
+
+  task-generator:
+    build: .
+    container_name: multi-robot-task-generator
+    environment:
+      - ROS_DOMAIN_ID=42
+      - MASTER_IP=coordination-master
+    depends_on:
+      - coordination-master
+    volumes:
+      - ./logs:/opt/multi_robot_ws/logs
+      - ./config:/opt/multi_robot_ws/src/multi_robot_coordination/config
+    command: ["python3", "/opt/multi_robot_ws/src/multi_robot_coordination/task_generator.py", "--rate", "0.5", "--environment", "warehouse"]
+    networks:
+      - multi-robot-net
+
+  system-monitor:
+    build: .
+    container_name: multi-robot-monitor
+    environment:
+      - ROS_DOMAIN_ID=42
+      - MASTER_IP=coordination-master
+      - DISPLAY=${DISPLAY}
+    depends_on:
+      - coordination-master
+    volumes:
+      - ./logs:/opt/multi_robot_ws/logs
+      - ./config:/opt/multi_robot_ws/src/multi_robot_coordination/config
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    command: ["python3", "/opt/multi_robot_ws/src/multi_robot_coordination/system_monitor.py", "--no-gui"]
+    networks:
+      - multi-robot-net
+
+networks:
+  multi-robot-net:
+    driver: bridge
