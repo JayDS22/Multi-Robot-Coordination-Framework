@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>multi_robot_coordination</name>
+  <version>1.0.0</version>
+  <description>Multi-Robot Coordination Framework with distributed reinforcement learning</description>
+
+  <maintainer email="team@multirobot.ai">Multi-Robot Team</maintainer>
+  <license>MIT</license>
+
+  <url type="website">https://github.com/yourusername/multi-robot-coordination</url>
+  <url type="bugtracker">https://github.com/yourusername/multi-robot-coordination/issues</url>
+  <url type="repository">https://github.com/yourusername/multi-robot-coordination</url>
+
+  <author email="team@multirobot.ai">Multi-Robot Coordination Team</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
+
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>visualization_msgs</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
