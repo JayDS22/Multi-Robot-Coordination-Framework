@@ -2,61 +2,26 @@
 
 A distributed multi-agent reinforcement learning system for coordinating autonomous robots using ROS, featuring fault-tolerant architecture and optimized task allocation.
 
-## 🏗️ High-Level Architecture
+## High-Level Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                        Multi-Robot Coordination Framework                       │
-└─────────────────────────────────────────────────────────────────────────────────┘
-                                        │
-                ┌───────────────────────┼───────────────────────┐
-                │                       │                       │
-        ┌───────▼────────┐    ┌────────▼────────┐    ┌────────▼────────┐
-        │ Coordination   │    │ Learning        │    │ Fault Tolerance │
-        │ Layer          │    │ Engine          │    │ Manager         │
-        │                │    │                 │    │                 │
-        │ • Task Queue   │    │ • Q-Learning    │    │ • Health Monitor│
-        │ • Robot Registry│    │ • Policy Grad   │    │ • Auto Recovery │
-        │ • Allocation   │    │ • Convergence   │    │ • Failover <2s  │
-        └────────────────┘    └─────────────────┘    └─────────────────┘
-                │                       │                       │
-        ┌───────▼───────────────────────▼───────────────────────▼───────┐
-        │                    Communication Layer                        │
-        │                                                               │
-        │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
-        │  │ ROS2        │  │ Message     │  │ Fault       │          │
-        │  │ Interface   │  │ Broker      │  │ Detection   │          │
-        │  │ <25ms       │  │ Reliable    │  │ 99.9% Avail │          │
-        │  └─────────────┘  └─────────────┘  └─────────────┘          │
-        └───────────────────────────────────────────────────────────────┘
-                │                       │                       │
-        ┌───────▼────────┐    ┌────────▼────────┐    ┌────────▼────────┐
-        │ Robot Agent 1  │    │ Robot Agent 2   │    │ Robot Agent N   │
-        │                │    │                 │    │                 │
-        │ • Q-Learning   │    │ • Task Exec     │    │ • Autonomous    │
-        │ • Navigation   │    │ • Sensors       │    │ • Collaborative │
-        │ • Task Exec    │    │ • State Monitor │    │ • Fault Recovery│
-        └────────────────┘    └─────────────────┘    └─────────────────┘
-                │                       │                       │
-        ┌───────▼───────────────────────▼───────────────────────▼───────┐
-        │                     Task Management                           │
-        │                                                               │
-        │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
-        │  │ Task        │  │ Auction     │  │ Performance │          │
-        │  │ Generator   │  │ Algorithm   │  │ Monitor     │          │
-        │  │ Dynamic     │  │ <50ms Alloc │  │ Real-time   │          │
-        │  └─────────────┘  └─────────────┘  └─────────────┘          │
-        └───────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                              Performance Metrics                                │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│  92% Convergence │ <50ms Allocation │ 99.9% Availability │ 50+ Robot Scale      │
-│  0.85 Policy Grad│ <25ms Latency    │ <2s Failover       │ 35% Efficiency ↑     │
-└─────────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    HUB[Multi-Robot Coordination Framework]
+    HUB --> COORD[Coordination Layer<br/>Task Queue<br/>Robot Registry<br/>Allocation]
+    HUB --> LEARN[Learning Engine<br/>Q-Learning<br/>Policy Gradient<br/>Convergence]
+    HUB --> FAULT[Fault Tolerance Manager<br/>Health Monitor<br/>Auto Recovery<br/>Failover under 2s]
+    COORD --> COMM[Communication Layer<br/>ROS2 Interface under 25ms<br/>Reliable Message Broker<br/>Fault Detection 99.9%]
+    LEARN --> COMM
+    FAULT --> COMM
+    COMM --> R1[Robot Agent 1<br/>Q-Learning, Navigation, Task Exec]
+    COMM --> R2[Robot Agent 2<br/>Task Exec, Sensors, State Monitor]
+    COMM --> RN[Robot Agent N<br/>Autonomous, Collaborative<br/>Fault Recovery]
+    R1 --> TM[Task Management<br/>Dynamic Task Generator<br/>Auction Algorithm under 50ms<br/>Real-time Performance Monitor]
+    R2 --> TM
+    RN --> TM
 ```
 
-## 🚀 Key Features
+## Key Features
 
 - **Distributed Coordination**: Supports 10+ autonomous robots with Q-learning
 - **High Performance**: 92% reward convergence, 0.85 policy gradient
@@ -65,7 +30,7 @@ A distributed multi-agent reinforcement learning system for coordinating autonom
 - **Low Latency**: <25ms communication latency, <50ms allocation time
 - **Scalable**: Tested with 50+ agents, 92% collaborative efficiency
 
-## 📋 Requirements
+## Requirements
 
 ### System Requirements
 - Ubuntu 20.04 LTS or higher
@@ -85,7 +50,7 @@ sudo apt install ros-humble-rclpy ros-humble-std-msgs ros-humble-geometry-msgs
 sudo apt install ros-humble-tf2-ros ros-humble-nav2-msgs
 ```
 
-## 🛠️ Installation
+## Installation
 
 1. **Clone the repository**
 ```bash
@@ -110,7 +75,7 @@ export ROBOT_ID=1  # Set unique ID for each robot
 export MASTER_IP=192.168.1.100  # Set master node IP
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Start the Coordination Master
 ```bash
@@ -140,7 +105,7 @@ python src/task_generator.py --rate 0.5 --complexity medium
 python src/system_monitor.py
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 multi-robot-coordination/
@@ -182,7 +147,7 @@ multi-robot-coordination/
 └── README.md                     # This file
 ```
 
-## 🧪 Testing
+## Testing
 
 ### Unit Tests
 ```bash
@@ -199,7 +164,7 @@ python src/tests/integration_test.py --robots 3
 python scripts/benchmark.py --duration 300 --robots 10
 ```
 
-## 📊 Performance Metrics
+## Performance Metrics
 
 The framework achieves the following performance characteristics:
 
@@ -214,7 +179,7 @@ The framework achieves the following performance characteristics:
 | Communication Latency | <50ms | <25ms |
 | Collaborative Efficiency | 90% | 92% |
 
-## 🔧 Configuration
+## Configuration
 
 ### Robot Configuration (`config/robot_config.yaml`)
 ```yaml
@@ -249,7 +214,7 @@ communication:
   compression: true
 ```
 
-## 🤖 Robot Agent Commands
+## Robot Agent Commands
 
 ### Basic Operations
 ```python
@@ -282,7 +247,7 @@ agent.set_exploration_rate(0.15)
 metrics = agent.get_performance_metrics()
 ```
 
-## 🔍 Monitoring and Debugging
+## Monitoring and Debugging
 
 ### Real-time Monitoring
 ```bash
@@ -305,7 +270,7 @@ tail -f logs/coordination.log
 python scripts/analyze_logs.py --file logs/performance.log
 ```
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -329,7 +294,7 @@ python scripts/analyze_logs.py --file logs/performance.log
 python src/robot_agent.py --debug --verbose
 ```
 
-## 🚀 Deployment
+## Deployment
 
 ### Docker Deployment
 ```bash
@@ -348,7 +313,7 @@ sudo systemctl enable multi-robot.service
 sudo systemctl start multi-robot.service
 ```
 
-## 📈 Performance Tuning
+## Performance Tuning
 
 ### Optimization Tips
 1. Adjust Q-learning parameters based on environment
@@ -361,7 +326,7 @@ sudo systemctl start multi-robot.service
 - **6-20 robots**: Increase buffer sizes, reduce heartbeat frequency
 - **21-50 robots**: Enable hierarchical coordination, optimize routing
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -369,17 +334,17 @@ sudo systemctl start multi-robot.service
 4. Add tests for new functionality
 5. Submit a pull request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📚 References
+## References
 
 - Multi-Agent Reinforcement Learning: A Selective Overview of Theories and Algorithms
 - Distributed Task Allocation in Multi-Robot Systems
 - Fault-Tolerant Distributed Systems Design Principles
 
-## 🆘 Support
+## Support
 
 For support and questions:
 - Create an issue on GitHub
